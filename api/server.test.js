@@ -30,7 +30,6 @@ describe('POST /register', () => {
 
 describe('POST /login', () => {
   beforeEach(async () => {
-    await db('users').truncate();
     const hashedPassword = bcryptjs.hashSync('foobar', 8);
     await db('users').insert({ username: 'Captain Marvel', password: hashedPassword });
   });
