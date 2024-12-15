@@ -8,7 +8,7 @@ router.post('/register', async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const taken = await User.findBy({ username: username })
-    if (!username || !password) {
+    if (!username || !password || !username && !password) {
       res.status(400).json({
         message: 'username and password required',
       });
