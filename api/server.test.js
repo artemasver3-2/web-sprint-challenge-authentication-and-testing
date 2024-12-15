@@ -3,6 +3,10 @@ const server = require('./server');
 const db = require('../data/dbConfig');
 const bcryptjs = require('bcryptjs')
 
+beforeEach(async () => {
+  await db('users').truncate(); 
+});
+
 describe('POST /register', () => {
   it('should register a new user successfully', async () => {
     const newUser = { username: 'Captain Marvel', password: 'foobar' };
@@ -30,6 +34,7 @@ describe('POST /register', () => {
 
 describe('POST /login', () => {
   beforeEach(async () => {
+    await db('users').truncate();
     const hashedPassword = bcryptjs.hashSync('foobar', 8);
     await db('users').insert({ username: 'Captain Marvel', password: hashedPassword });
   });
