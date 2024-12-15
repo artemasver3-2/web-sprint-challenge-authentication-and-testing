@@ -3,11 +3,12 @@ const server = require('./server');
 const db = require('../data/dbConfig');
 const bcryptjs = require('bcryptjs')
 
-beforeEach(async () => {
-  await db('users').truncate(); 
-});
 
 describe('POST /register', () => {
+beforeEach(async () => {
+  await db('users').truncate(); 
+  await db('users').insert({ username: 'testUser1', password: 'password123' });
+});
   it('should register a new user successfully', async () => {
     const newUser = { username: 'Captain Marvel', password: 'foobar' };
 
