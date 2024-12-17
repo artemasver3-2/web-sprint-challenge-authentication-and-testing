@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     return res.status(401).json({ message: 'token required' });
   }
 
-  jwt.verify(token, secrets, (err, decoded) => {
+  jwt.verify(token, secrets.jwtSecret, (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: 'token invalid' });
     }
