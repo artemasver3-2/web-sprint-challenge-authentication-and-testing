@@ -7,24 +7,25 @@ const secrets = require('../secrets');
 router.post('/register', async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const taken = await User.findBy({ username: username })
     if (!username || !password) {
-      res.status(400).json({
+      return res.status(400).json({
         message: 'username and password required',
       });
-    } else if(taken.length) {
-      res.status(400).json({
+    }
+    const taken = await User.findBy({ username }).first();
+    if (taken) {
+      return res.status(400).json({
         message: 'username taken',
       });
-    } else if (!taken.length) {
-      const hashedPassword = bcryptjs.hashSync( password, 8 )
-      User.add({ username, password: hashedPassword })
-      .then(saved => {
-        res.status(201).json(saved)
-      })
     }
-  } catch(err) {
-    next(err)
+    const hashedPassword = bcryptjs.hashSync(password, 8);
+    const newUser = await User.add({
+      username,
+      password: hashedPassword,
+    });
+    res.status(201).json(newUser);
+  } catch (err) {
+    next(err);
   }
 });
 
