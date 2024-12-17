@@ -3,6 +3,10 @@ const server = require('./server');
 const db = require('../data/dbConfig');
 const bcryptjs = require('bcryptjs')
 
+beforeAll(async () => {
+  await db.migrate.rollback(); 
+  await db.migrate.latest();   
+});
 
 describe('POST /register', () => {
 beforeEach(async () => {
